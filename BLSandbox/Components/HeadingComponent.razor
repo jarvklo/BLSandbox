@@ -1,0 +1,13 @@
+﻿<div class="card">
+    <div class="card-header bg-primary text-white">@(Title ?? "Hello world")</div>
+    <div class="card-body">@ChildContent</div>
+</div>
+
+@code {
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+}

@@ -1,0 +1,47 @@
+﻿@page "/JSInterop"
+@inject IJSRuntime JSRuntime
+
+<h1>JavaScript Interop</h1>
+
+<h2>Invoke JavaScript functions from .NET methods</h2>
+<p>
+    <button type="button" class="btn btn-primary" @onclick="TriggerJsPrompt">
+        Trigger JavaScript Prompt
+    </button>
+</p>
+
+<h3 id="welcome" style="color:green;font-style:italic"></h3>
+
+
+<h2>Call .NET code from JavaScript</h2>
+<p>
+    <button type="button" class="btn btn-primary"
+            onclick="exampleJsFunctions.returnANurseryRhymeFromDotNet()">
+        Trigger .NET static method ReturnANurseryRhyme
+    </button>
+</p>
+
+<ul id="nurseryrhyme"></ul>
+
+@code {
+    public async Task TriggerJsPrompt()
+    {
+        var name = await JSRuntime.InvokeAsync<string>
+    (
+    "exampleJsFunctions.showPrompt",
+    "What's your name?");
+
+        await JSRuntime.InvokeVoidAsync(
+        "exampleJsFunctions.displayWelcome",
+        $"Hello {name}! Welcome to Blazor!");
+    }
+
+
+
+
+    [JSInvokable]
+    public static Task<string[]> ReturnANurseryRhyme()
+    {
+        return Task.FromResult(new string[] { "Fee", "Fie", "Foe", "Fum" });
+    }
+}
